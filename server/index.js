@@ -8,12 +8,13 @@ app.use(express.static('client/dist'))
 
 // Create
 app.post('/course/:type', (req, res) => {
-  // type will be course or name
+  // type will be course or test
 })
 
 // Read
-app.get('/course/:type/:query', (req, res) => {
-  // type will be courseId, courseName, or testName
+app.get('/course/:type/:identifier/:query', (req, res) => {
+  // type wil lbe course or test
+  // identifier will be courseId, courseName, or testName
   // query is the search entered by user
 })
 

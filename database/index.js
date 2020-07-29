@@ -8,6 +8,6 @@ var connection = mysql.createConnection({
   database: 'ESS'
 })
 
-connection.connect((error) => {
+module.exports.connect = connection.connect((error) => {
   error ? console.log(`Error connecting to mysql: ${error.stack}`): console.log('Connected to mysql');
 })
