@@ -21,7 +21,15 @@ module.exports.create = (data) => {
 // query is what has been entered by user
 module.exports.read = (identifier, query) => {
   return new Promise((resolve, reject) => {
-    connection.query(`SELECT * FROM courses WHERE ? LIKE '?%'`, [identifier, query], (error, result) => {
+    let mysqlQuery;
+    // if there has been a query entered:
+    if (query) {
+      mysqlQuery = `SELECT * FROM course LEFT JOIN test ON course.id = test.course_id' WHERE course.${identifier} LIKE '${query}%'`
+    // otherwise grab all results from courses w/ the corresponding tests- like on portal load
+    } else {
+      mysqlQuery = 'SELECT * FROM course LEFT JOIN test ON course.id = test.course_id';
+    }
+    connection.query(mysqlQuery, (error, result) => {
       if (error) {
         reject(error);
       } else {
@@ -35,7 +43,7 @@ module.exports.read = (identifier, query) => {
 module.exports.update = (id, data) => {
   return new Promise((resolve, reject) => {
     let values = Object.keys(data).map(key => `${key} = '${data[key]}'`).join(', ')
-    connection.query(`UPDATE courses SET ${values} WHERE id = ?`, [id], (error, result) => {
+    connection.query(`UPDATE course SET ${values} WHERE id = ?`, [id], (error, result) => {
       if (error) {
         reject(error);
       } else {
@@ -46,3 +54,15 @@ module.exports.update = (id, data) => {
 };
 
 // Delete
+// will also delete all tests associated with this course
+module.exports.delete = (id) => {
+  return new Promise((resolve, reject) => {
+    connection.query(`DELETE course, test FROM course INNER JOIN test ON course.id = test.course_id WHERE course.id = ?`, [id], (error, result) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(result);
+      }
+    })
+  })
+};
