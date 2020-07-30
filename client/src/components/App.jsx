@@ -1,4 +1,6 @@
 import SearchBar from './SearchBar.jsx';
+import AllCourses from './AllCourses.jsx';
+import sortData from '../helpers/sortData.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -20,7 +22,8 @@ class App extends React.Component {
 
     axios.get(`http://localhost:2000/ce/${type}/${identifier}/${input}`)
       .then((response) => {
-        this.setState({ courses: response.data})
+        var courses = sortData(response.data)
+        this.setState({ courses })
       })
       .catch((error) => console.log(error))
   }
@@ -34,7 +37,7 @@ class App extends React.Component {
     return (
       <div>
         <SearchBar search={this.search.bind(this)}/>
-        {/* <AllCourses /> */}
+        {this.state.courses.length === 0 ? <div>Loading...</div>: <AllCourses courses={this.state.courses}/>}
         <button>Add New Course</button>
       </div>
     )

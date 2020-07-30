@@ -22,17 +22,17 @@ module.exports.read = (identifier, query) => {
     let mysqlQuery;
     // if there has been a query entered:
     if (query !== 'null') {
-      mysqlQuery = `SELECT * FROM course LEFT JOIN test ON course.id = test.course_id WHERE course.${identifier} LIKE '${query}%'`
+      mysqlQuery = `SELECT course.*, course.name AS course_name, test.* FROM course LEFT JOIN test ON course.id = test.course_id WHERE course.${identifier} LIKE '${query}%' ORDER BY course_name ASC`
     // otherwise grab all results from courses w/ the corresponding tests- like on portal load
     } else {
-      mysqlQuery = 'SELECT * FROM course LEFT JOIN test ON course.id = test.course_id';
+      mysqlQuery = 'SELECT course.*, course.name AS course_name, test.* FROM course LEFT JOIN test ON course.id = test.course_id ORDER BY course_name ASC';
     }
     connection.query(mysqlQuery, (error, result) => {
+      console.log(result)
       error ? reject(error): resolve(result);
     })
   })
 };
-
 
 // Update
 module.exports.update = (id, data) => {
