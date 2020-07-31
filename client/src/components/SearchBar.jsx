@@ -41,7 +41,7 @@ class SearchBar extends React.Component {
           <option value='test name'>Test Name</option>
         </select>
 
-        <input type="submit" value="Submit" />
+        <input id='form-submit-btn' type="submit" value="Submit"/>
       </form>
     )
   }

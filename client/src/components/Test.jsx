@@ -1,11 +1,11 @@
 var Test = (props) =>{
     return (
-      <div>
-        <span>{props.data.name}</span>
-        <span>{props.data.duration}</span>
-        <span>{props.data.numQuestions}</span>
-        <span onClick={() => props.edit(props.data)}>Edit</span>
-      </div>
+      <li>
+        <span>•  {props.data.name}  |  {props.data.duration}  |  {props.data.numQuestions} Questions</span>
+        {/* <span></span>
+        <span></span> */}
+        <span className='edit-test-btn' onClick={() => props.edit(props.data)}>Edit</span>
+      </li>
     )
 }
 

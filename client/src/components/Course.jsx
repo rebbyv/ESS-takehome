@@ -14,25 +14,25 @@ class Course extends React.Component {
   }
 
   render() {
-    return (
-      <>
-        <div className='courses' onClick={this.viewTests.bind(this)}>
-          <span>
-            <p><strong>{this.props.data.name}</strong> - {this.props.data.description}</p>
-            <p>Domain: {this.props.data.domain}</p>
-            <p>View Tests +</p>
-          </span>
-          <span onClick={() => this.props.edit(this.props.data)}>Edit</span>
-        </div>
 
-        
+    return (
+      <div className='courses' onClick={this.viewTests.bind(this)}>
+        <span className='edit-course-btn' onClick={() => this.props.edit(this.props.data)}>Edit</span>
+        <span className='course-info'>
+          <span className='course-name'><strong>{this.props.data.name}</strong> - {this.props.data.description}</span>
+          <span>Domain: {this.props.data.domain}</span>
+        </span>
+
+        <div className='show-tests'>{this.state.testsVisible ? '- Hide':'+ Show'} Tests</div>
         {!this.state.testsVisible ? null:
-          this.props.data.tests.map((test, i) => <Test data={test} key={i} edit={this.props.edit}/>)
+          <ul>
+            {this.props.data.tests.map((test, i) => <Test data={test} key={i} edit={this.props.edit}/>)}
+          </ul>
         }
         {!this.state.testsVisible ? null:
           <button onClick={() => this.props.add('Test', this.props.data.id)}>Add New Test</button>
         }
-      </>
+      </div>
     )
   }
 }
