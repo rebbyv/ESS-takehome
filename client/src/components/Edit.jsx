@@ -65,7 +65,7 @@ class Edit extends React.Component {
     return (
       <div>
         <span>
-          <span>Edit {type}</span> 
+          <span>Edit {this.props.type}</span> 
           <span onClick={() => this.props.closeEdit(null)}>X</span>
         </span>
         <form onSubmit={this.handleSubmit}>

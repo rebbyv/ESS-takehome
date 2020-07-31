@@ -14,6 +14,15 @@ app.use(express.json()) // for parsing application/json
 // Create
 app.post('/ce/:type', (req, res) => {
   // type will be course or test
+  if (req.params.type === 'Course') {
+    courses.create(req.body)
+      .then((results) => res.status(200).send(results))
+      .catch((error) => res.status(500).send(error))
+  } else {
+    tests.create(req.params.type, req.body)
+      .then((results) => res.status(200).send(results))
+      .catch((error) => res.status(500).send(error))
+  }
 })
 
 // Read
@@ -36,7 +45,6 @@ app.get('/ce/:type/:identifier/:query', (req, res) => {
 app.put('/ce/:type/:id', (req, res) => {
   // type will be course or test
   // id is the course or test to update
-  console.log(req.body)
   if (req.params.type === 'course') {
     courses.update(req.params.id, req.body)
       .then((results) => res.status(200).send(results))

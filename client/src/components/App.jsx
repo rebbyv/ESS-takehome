@@ -1,6 +1,7 @@
 import SearchBar from './SearchBar.jsx';
 import AllCourses from './AllCourses.jsx';
 import Edit from './Edit.jsx';
+import Add from './Add.jsx'
 import sortData from '../helpers/sortData.js';
 
 class App extends React.Component {
@@ -9,7 +10,9 @@ class App extends React.Component {
     this.state = {
       courses: [],
       editModal: false,
-      dataToEdit: null
+      dataToEdit: null,
+      addModal: false,
+      typeToAdd: null
     }
   }
 
@@ -33,31 +36,48 @@ class App extends React.Component {
   }
 
   openEdit(data) {
-    console.log('clicked', data)
     this.setState({ 
       editModal: true,
       dataToEdit: data
     })
   }
 
+  // close edit modal. If data is not null, edit the coures or test
   closeEdit(data, updates) {
     if (data) {
       let type = data.domain ? 'course': 'test';
       axios.put(`http://localhost:2000/ce/${type}/${data.id}`, updates)
       .then(() => {
         this.search(null, 'course id');
-        this.setState({
-          editModal: false,
-          dataToEdit: null
-        })
       })
       .catch((error) => console.log(error))
-    } else {
-      this.setState({
-        editModal: false,
-        dataToEdit: null
+    } 
+    this.setState({
+      editModal: false,
+      dataToEdit: null
+    })
+  }
+
+  // open add Modal to add course or test
+  openAdd(type) {
+    this.setState({
+      addModal: true,
+      typeToAdd: type
+    })
+  }
+
+  closeAdd(data, type) {
+    if (data) {
+      axios.post(`http://localhost:2000/ce/${type}`, data)
+      .then(() => {
+        this.search(null, 'course id');
       })
-    }
+      .catch((error) => console.log(error))
+    } 
+    this.setState({
+      addModal: false,
+      typeToAdd: null
+    })
   }
 
   // delete a course or test & then get updated results
@@ -80,10 +100,13 @@ class App extends React.Component {
     return (
       <div>
         {this.state.editModal ? <Edit data={this.state.dataToEdit} closeEdit={this.closeEdit.bind(this)} delete={this.delete.bind(this)}/>: null}
+        {this.state.addModal ? <Add type={this.state.typeToAdd} closeAdd={this.closeAdd.bind(this)}/>: null}
 
         <SearchBar search={this.search.bind(this)}/>
+
         {this.state.courses.length === 0 ? <div>Loading...</div>: <AllCourses courses={this.state.courses} edit={this.openEdit.bind(this)}/>}
-        <button>Add New Course</button>
+        
+        <button onClick={this.openAdd.bind(this, 'Course')}>Add New Course</button>
       </div>
     )
   }

@@ -5,9 +5,9 @@ var connection = mysql.connect;
 // Create
 // adds 1 course
 module.exports.create = (data) => {
-  let values = [data.name, data.domain, data.desription];
   return new Promise((resolve, reject) => {
-    connection.query('INSERT INTO course (name, domain, description) VALUES (?, ?, ?)', values, (error, result) => {
+    connection.query('INSERT INTO course (name, domain, description) VALUES (?, ?, ?)', data, (error, result) => {
+      console.log(error, result)
       error ? reject(error): resolve(result);
     })
   })
