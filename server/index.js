@@ -40,7 +40,16 @@ app.put('/ce/:type/:id', (req, res) => {
 // Delete
 app.delete('/ce/:type/:id', (req, res) => {
   // type will be course or test
-  // name will be the name of the course or test
+  // id is the id to delete out of the table
+  if (req.params.type === 'course') {
+    courses.delete(req.params.id)
+      .then((results) => res.status(200).send(results))
+      .catch((error) => res.status(500).send(error))
+  } else {
+    tests.delete(req.params.id)
+      .then((results) => res.status(200).send(results))
+      .catch((error) => res.status(500).send(error))
+  }
 })
 
 

@@ -32,7 +32,7 @@ class App extends React.Component {
       .catch((error) => console.log(error))
   }
 
-  edit(data) {
+  openEdit(data) {
     console.log('clicked', data)
     this.setState({ 
       editModal: true,
@@ -55,8 +55,14 @@ class App extends React.Component {
     }
   }
 
+  // delete a course or test & then get updated results
   delete(data) {
-    console.log('clicked',data)
+    let type = data.domain ? 'course': 'test';
+    axios.delete(`http://localhost:2000/ce/${type}/${data.id}`)
+      .then(() => {
+        this.search(null, 'course id');
+      })
+      .catch((error) => console.log(error))
   }
 
   // grab all courses & tests upon loading portal
@@ -71,7 +77,7 @@ class App extends React.Component {
         {this.state.editModal ? <Edit data={this.state.dataToEdit} closeEdit={this.closeEdit.bind(this)} delete={this.delete.bind(this)}/>: null}
 
         <SearchBar search={this.search.bind(this)}/>
-        {this.state.courses.length === 0 ? <div>Loading...</div>: <AllCourses courses={this.state.courses} edit={this.edit.bind(this)}/>}
+        {this.state.courses.length === 0 ? <div>Loading...</div>: <AllCourses courses={this.state.courses} edit={this.openEdit.bind(this)}/>}
         <button>Add New Course</button>
       </div>
     )
