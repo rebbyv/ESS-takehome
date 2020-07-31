@@ -28,7 +28,7 @@ class Course extends React.Component {
         <span onClick={() => this.props.edit(this.props.data)}>Edit</span>
         
         {!this.state.testsVisible ? null:
-          this.props.data.tests.map((test, i) => <Test data={test} key={i}/>)
+          this.props.data.tests.map((test, i) => <Test data={test} key={i} edit={this.props.edit}/>)
         }
       </>
     )

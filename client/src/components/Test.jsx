@@ -1,17 +1,12 @@
-class Test extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    }
-  }
-
-  render() {
+var Test = (props) =>{
     return (
       <div>
-        <h5>{this.props.data.name}</h5>
+        <span>{props.data.name}</span>
+        <span>{props.data.duration}</span>
+        <span>{props.data.numQuestions}</span>
+        <span onClick={() => props.edit(props.data)}>Edit</span>
       </div>
     )
-  }
 }
 
 export default Test;

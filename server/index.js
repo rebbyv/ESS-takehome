@@ -50,7 +50,7 @@ app.put('/ce/:type/:id', (req, res) => {
       .then((results) => res.status(200).send(results))
       .catch((error) => res.status(500).send(error))
   } else {
-    tests.update(req.params.id)
+    tests.update(req.params.id, req.body)
       .then((results) => res.status(200).send(results))
       .catch((error) => res.status(500).send(error))
   }

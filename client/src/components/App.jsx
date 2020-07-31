@@ -42,7 +42,7 @@ class App extends React.Component {
     })
   }
 
-  // close edit modal. If data is not null, edit the coures or test
+  // close edit modal. If data is not null, edit the coures or test & then update course list
   closeEdit(data, updates) {
     if (data) {
       let type = data.domain ? 'course': 'test';
@@ -66,6 +66,7 @@ class App extends React.Component {
     })
   }
 
+  // close add modal. If data is not null, add to the database & then update course list
   closeAdd(data, type) {
     if (data) {
       axios.post(`http://localhost:2000/ce/${type}`, data)

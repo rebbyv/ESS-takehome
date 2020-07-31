@@ -59,7 +59,7 @@ class Edit extends React.Component {
     } else {
       type = 'Test';
       inputTwo = <input type='text' value={this.state.duration === '' ? this.props.data.duration: this.state.duration} id='edit-test-duration' onChange={this.handleChange}></input>
-      inputThree = <input type='text' value={this.state.num_of_questions === '' ? this.props.data.num_of_questions: this.state.num_of_questions} id='edit-test-num_of_questions' onChange={this.handleChange}></input>
+      inputThree = <input type='text' value={this.state.num_of_questions === '' ? this.props.data.numQuestions: this.state.num_of_questions} id='edit-test-num_of_questions' onChange={this.handleChange}></input>
     }
 
     return (
