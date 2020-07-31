@@ -37,7 +37,7 @@ module.exports.read = (identifier, query) => {
 // Update
 module.exports.update = (id, data) => {
   return new Promise((resolve, reject) => {
-    let values = Object.keys(data).map(key => `${key} = '${data[key]}'`).join(', ')
+    let values = Object.keys(data).map(key => {if (data[key]) { return `${key} = '${data[key]}'`}}).filter(item => item !== undefined).join(', ')
     connection.query(`UPDATE course SET ${values} WHERE id = ?`, [id], (error, result) => {
       error ? reject(error): resolve(result);
     })

@@ -42,11 +42,16 @@ class App extends React.Component {
 
   closeEdit(data, updates) {
     if (data) {
-      console.log(data, updates)
-      this.setState({
-        editModal: false,
-        dataToEdit: null
+      let type = data.domain ? 'course': 'test';
+      axios.put(`http://localhost:2000/ce/${type}/${data.id}`, updates)
+      .then(() => {
+        this.search(null, 'course id');
+        this.setState({
+          editModal: false,
+          dataToEdit: null
+        })
       })
+      .catch((error) => console.log(error))
     } else {
       this.setState({
         editModal: false,
