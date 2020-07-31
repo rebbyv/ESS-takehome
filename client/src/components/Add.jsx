@@ -34,7 +34,7 @@ class Add extends React.Component {
     if (this.props.type === 'Course') {
       data = [this.state.name, this.state.domain, this.state.description]
     } else {
-      data = [this.state.name, this.state.num_of_questions, this.state.duration]
+      data = [this.props.id, parseInt(this.state.num_of_questions), this.state.name, this.state.duration]
     }
     this.props.closeAdd(data, this.props.type);
   }

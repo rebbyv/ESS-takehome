@@ -16,13 +16,17 @@ CREATE TABLE IF NOT EXISTS course (
   UNIQUE KEY name (name)
 );
 
+
 CREATE TABLE IF NOT EXISTS test (
   id int(10) unsigned NOT NULL AUTO_INCREMENT,
   course_id int(10) unsigned NOT NULL,
   num_of_questions int(10) unsigned NOT NULL,
   name varchar(50) COLLATE utf8_bin DEFAULT NULL,
   duration varchar(10) COLLATE utf8_bin DEFAULT NULL,
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
+  FOREIGN KEY (course_id) 
+    REFERENCES course (id)
+    ON DELETE CASCADE
 );
 
 

@@ -19,7 +19,7 @@ app.post('/ce/:type', (req, res) => {
       .then((results) => res.status(200).send(results))
       .catch((error) => res.status(500).send(error))
   } else {
-    tests.create(req.params.type, req.body)
+    tests.create(req.body)
       .then((results) => res.status(200).send(results))
       .catch((error) => res.status(500).send(error))
   }

@@ -16,19 +16,21 @@ class Course extends React.Component {
   render() {
     return (
       <>
-        <div onClick={this.viewTests.bind(this)}>
+        <div className='courses' onClick={this.viewTests.bind(this)}>
           <span>
-            <h5>{this.props.data.name}</h5>
-            <p> - {this.props.data.description}</p>
+            <p><strong>{this.props.data.name}</strong> - {this.props.data.description}</p>
+            <p>Domain: {this.props.data.domain}</p>
+            <p>View Tests +</p>
           </span>
-          <p>Domain: {this.props.data.domain}</p>
-          <p>View Tests +</p>
+          <span onClick={() => this.props.edit(this.props.data)}>Edit</span>
         </div>
 
-        <span onClick={() => this.props.edit(this.props.data)}>Edit</span>
         
         {!this.state.testsVisible ? null:
           this.props.data.tests.map((test, i) => <Test data={test} key={i} edit={this.props.edit}/>)
+        }
+        {!this.state.testsVisible ? null:
+          <button onClick={() => this.props.add('Test', this.props.data.id)}>Add New Test</button>
         }
       </>
     )

@@ -6,7 +6,7 @@ module.exports = (data) => {
       viewedCourse[data[i].course_name] = data[i].course_name;
       courses.push({
         name: data[i].course_name,
-        id: data[i].course_id,
+        id: data[i].courseID,
         domain: data[i].domain,
         description: data[i].description,
         tests: [{

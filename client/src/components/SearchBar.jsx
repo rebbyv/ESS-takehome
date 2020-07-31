@@ -33,7 +33,7 @@ class SearchBar extends React.Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <input type='text' value={this.state.input} onChange={this.handleChange}></input>
+        <input type='text' value={this.state.input} onChange={this.handleChange} placeholder='Search by Course or Test'></input>
 
         <select value={this.state.option} onChange={this.handleSelectChange}>
           <option value='course id'>Course Id</option>

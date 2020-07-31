@@ -7,7 +7,6 @@ var connection = mysql.connect;
 module.exports.create = (data) => {
   return new Promise((resolve, reject) => {
     connection.query('INSERT INTO course (name, domain, description) VALUES (?, ?, ?)', data, (error, result) => {
-      console.log(error, result)
       error ? reject(error): resolve(result);
     })
   })
@@ -22,13 +21,12 @@ module.exports.read = (identifier, query) => {
     let mysqlQuery;
     // if there has been a query entered:
     if (query !== 'null') {
-      mysqlQuery = `SELECT course.*, course.name AS course_name, test.* FROM course LEFT JOIN test ON course.id = test.course_id WHERE course.${identifier} LIKE '${query}%' ORDER BY course_name ASC`
+      mysqlQuery = `SELECT course.*, course.id AS courseID, course.name AS course_name, test.* FROM course JOIN test ON course.id = test.course_id WHERE course.${identifier} LIKE '${query}%' ORDER BY course_name ASC`
     // otherwise grab all results from courses w/ the corresponding tests- like on portal load
     } else {
-      mysqlQuery = 'SELECT course.*, course.name AS course_name, test.* FROM course LEFT JOIN test ON course.id = test.course_id ORDER BY course_name ASC';
+      mysqlQuery = 'SELECT course.*, course.id AS courseID, course.name AS course_name, test.* FROM course LEFT JOIN test ON course.id = test.course_id ORDER BY course_name ASC';
     }
     connection.query(mysqlQuery, (error, result) => {
-      console.log(result)
       error ? reject(error): resolve(result);
     })
   })
@@ -49,7 +47,8 @@ module.exports.update = (id, data) => {
 // will also delete all tests associated with this course
 module.exports.delete = (id) => {
   return new Promise((resolve, reject) => {
-    connection.query(`DELETE course, test FROM course INNER JOIN test ON course.id = test.course_id WHERE course.id = ?`, [id], (error, result) => {
+    connection.query(`DELETE FROM course WHERE id = ?`, [id], (error, result) => {
+      console.log(error, result)
       error ? reject(error): resolve(result);
     })
   })

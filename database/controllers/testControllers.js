@@ -4,14 +4,9 @@ var connection = mysql.connect;
 // Create
 // adds 1 course
 module.exports.create = (data) => {
-  let values = [data.courseId, data.numQuestions, data.name, data.description];
   return new Promise((resolve, reject) => {
-    connection.query('INSERT INTO test (course_id, num_of_questions, name, duration) VALUES (?, ?, ?, ?)', values, (error, result) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(result);
-      }
+    connection.query('INSERT INTO test (course_id, num_of_questions, name, duration) VALUES (?, ?, ?, ?)', data, (error, result) => {
+      error ? reject(error): resolve(result);
     })
   })
 };
@@ -22,11 +17,7 @@ module.exports.create = (data) => {
 module.exports.read = (identifier, query) => {
   return new Promise((resolve, reject) => {
     connection.query(`SELECT * FROM test WHERE ? LIKE '?%'`, [identifier, query], (error, result) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(result);
-      }
+      error ? reject(error): resolve(result);
     })
   })
 };
@@ -36,11 +27,7 @@ module.exports.update = (id, data) => {
   return new Promise((resolve, reject) => {
     let values = Object.keys(data).map(key => {if (data[key]) { return `${key} = '${data[key]}'`}}).filter(item => item !== undefined).join(', ')
     connection.query(`UPDATE test SET ${values} WHERE id = ?`, [id], (error, result) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(result);
-      }
+      error ? reject(error): resolve(result);
     })
   })
 };
@@ -49,11 +36,7 @@ module.exports.update = (id, data) => {
 module.exports.delete = (id) => {
   return new Promise((resolve, reject) => {
     connection.query(`DELETE FROM test WHERE id = ?`, [id], (error, result) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(result);
-      }
+      error ? reject(error): resolve(result);
     })
   })
 };
