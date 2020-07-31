@@ -9,7 +9,6 @@ class Test extends React.Component {
     return (
       <div>
         <h5>{this.props.data.name}</h5>
-
       </div>
     )
   }

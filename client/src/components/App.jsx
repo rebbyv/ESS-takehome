@@ -1,12 +1,15 @@
 import SearchBar from './SearchBar.jsx';
 import AllCourses from './AllCourses.jsx';
+import Edit from './Edit.jsx';
 import sortData from '../helpers/sortData.js';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      courses: []
+      courses: [],
+      editModal: false,
+      dataToEdit: null
     }
   }
 
@@ -19,15 +22,44 @@ class App extends React.Component {
     } else {
       type = 'test';
     }
-
+    // get all courses & tests
     axios.get(`http://localhost:2000/ce/${type}/${identifier}/${input}`)
       .then((response) => {
+        // sort into array of objects, tests are nested in the courses
         var courses = sortData(response.data)
         this.setState({ courses })
       })
       .catch((error) => console.log(error))
   }
 
+  edit(data) {
+    console.log('clicked', data)
+    this.setState({ 
+      editModal: true,
+      dataToEdit: data
+    })
+  }
+
+  closeEdit(data, updates) {
+    if (data) {
+      console.log(data, updates)
+      this.setState({
+        editModal: false,
+        dataToEdit: null
+      })
+    } else {
+      this.setState({
+        editModal: false,
+        dataToEdit: null
+      })
+    }
+  }
+
+  delete(data) {
+    console.log('clicked',data)
+  }
+
+  // grab all courses & tests upon loading portal
   componentDidMount() {
     this.search(null, 'course id');
   }
@@ -36,8 +68,10 @@ class App extends React.Component {
   render() {
     return (
       <div>
+        {this.state.editModal ? <Edit data={this.state.dataToEdit} closeEdit={this.closeEdit.bind(this)} delete={this.delete.bind(this)}/>: null}
+
         <SearchBar search={this.search.bind(this)}/>
-        {this.state.courses.length === 0 ? <div>Loading...</div>: <AllCourses courses={this.state.courses}/>}
+        {this.state.courses.length === 0 ? <div>Loading...</div>: <AllCourses courses={this.state.courses} edit={this.edit.bind(this)}/>}
         <button>Add New Course</button>
       </div>
     )
