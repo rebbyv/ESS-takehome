@@ -51,32 +51,46 @@ class Edit extends React.Component {
 
   render() {
     // change type & input based on whether it's a test or course being edited
-    let type, inputTwo, inputThree;
+    let type, inputTwo, inputThree, labelTwo, labelThree;
+    console.log(this.props)
     if (this.props.data.domain) {
       type = 'Course';
-      inputTwo = <input type='text' value={this.state.description === '' ? this.props.data.description: this.state.description} id='edit-course-description' onChange={this.handleChange}></input>
-      inputThree = <input type='text' value={this.state.domain === '' ? this.props.data.domain: this.state.domain} id='edit-course-domain' onChange={this.handleChange}></input>
+      labelTwo = 'Description:';
+      labelThree = 'Domain:';
+      inputTwo = <input type='text' value={this.state.description === '' ? this.props.data.description: this.state.description} id='edit-course-description' className='modal-input' onChange={this.handleChange}></input>
+      inputThree = <input type='text' value={this.state.domain === '' ? this.props.data.domain: this.state.domain} id='edit-course-domain' className='modal-input' onChange={this.handleChange}></input>
     } else {
       type = 'Test';
-      inputTwo = <input type='text' value={this.state.duration === '' ? this.props.data.duration: this.state.duration} id='edit-test-duration' onChange={this.handleChange}></input>
-      inputThree = <input type='text' value={this.state.num_of_questions === '' ? this.props.data.numQuestions: this.state.num_of_questions} id='edit-test-num_of_questions' onChange={this.handleChange}></input>
+      labelTwo = 'Duration:';
+      labelThree = 'Number of Questions';
+      inputTwo = <input type='text' value={this.state.duration === '' ? this.props.data.duration: this.state.duration} id='edit-test-duration' className='modal-input' onChange={this.handleChange}></input>
+      inputThree = <input type='text' value={this.state.num_of_questions === '' ? this.props.data.numQuestions: this.state.num_of_questions} id='edit-test-num_of_questions' className='modal-input' onChange={this.handleChange}></input>
     }
 
     return (
-      <div>
-        <span>
-          <span>Edit {this.props.type}</span> 
-          <span onClick={() => this.props.closeEdit(null)}>X</span>
-        </span>
-        <form onSubmit={this.handleSubmit}>
-          <input type='text' value={this.state.name === '' ? this.props.data.name: this.state.name} id='edit-name' onChange={this.handleChange}></input>
-          {inputTwo}
-          {inputThree}
-          <input type='submit' value='submit'></input>
-        </form>
+      <div id='modal'>
+        <div className='modal-body'>
+          <div className='modal-header'>
+            <span><strong>Edit {type}</strong></span> 
+            <span className='exit-btn' onClick={() => this.props.closeEdit(null)}>X</span>
+          </div>
 
-        {this.state.clickCount === 1 ? <span>Are you sure? {type} will be deleted.</span>: null}
-        <button onClick={this.handleDelete}>{this.state.clickCount === 1 ? 'Yes, ':null}Delete {type}</button>
+          <form className='modal-form' onSubmit={this.handleSubmit}>
+            <label>Name:</label>
+            <input type='text' value={this.state.name === '' ? this.props.data.name: this.state.name} id='edit-name' className='modal-input' onChange={this.handleChange}></input>
+            <label>{labelTwo}</label>
+            {inputTwo}
+            <label>{labelThree}</label>
+            {inputThree}
+            <input className='form-btn' type='submit' value='Submit'></input>
+          </form>
+
+          <div className='delete-div'>
+            {this.state.clickCount === 1 ? <span>Are you sure? {type} will be deleted.</span>: null}
+            <button id='delete-btn' onClick={this.handleDelete}>{this.state.clickCount === 1 ? 'Yes, ':null}Delete {type}</button>
+          </div>
+
+        </div>
       </div>
     )
   }

@@ -79,15 +79,12 @@ select {
   cursor: pointer;
 }
 
-ul {
-  list-style-type: square;
-}
-
 li {
   display: flex;
   justify-content: space-between;
+  padding: 10px;
+  margin: 10px;
 }
-
 
 button {
   font-size: 1em;
@@ -101,4 +98,78 @@ button {
 }
 button:hover {
   cursor: pointer;
+}
+button#delete-btn {
+  margin-top: 10px;
+}
+
+/* Modal for Editing or Adding  */
+#modal {
+  background-color: #808080c9;
+  top: 85px;
+  left: 0;
+  position: fixed;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+}
+
+.modal-body {
+  border: 3px solid #000000;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 700px;
+  height: 425px;
+  margin-left: -350px;
+  margin-top: -250px;
+  padding: 10px;
+  background-color: white;
+  z-index: 1;
+  color: black;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.3em;
+}
+
+.exit-btn:hover {
+  cursor: pointer;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  width: 50%;
+}
+
+.modal-input {
+  border: 1px black solid;
+  padding: 11px;
+  margin: 10px;
+}
+
+label {
+  margin: 0px 11px;
+}
+
+.form-btn {
+  width: 25%;
+  font-size: 1em;
+  padding: 10px;
+  font-family: Arial;
+  border: none;
+  background: lightgrey;
+  margin: 10px;
+}
+.form-btn:hover {
+  cursor: pointer;
+}
+
+.delete-div {
+  text-align: center;
+  margin-top: 20px;
 }

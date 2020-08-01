@@ -42,29 +42,38 @@ class Add extends React.Component {
 
   render() {
     // change type & input based on whether it's a test or course being edited
-    let inputTwo, inputThree;
+    let inputTwo, inputThree, labelTwo, labelThree;
     if (this.props.type === 'Course') {
-      inputTwo = <input type='text' value={this.state.description} id='edit-course-description' onChange={this.handleChange} placeholder='Description'></input>
-      inputThree = <input type='text' value={this.state.domain} id='edit-course-domain' onChange={this.handleChange} placeholder='Domain'></input>
+      labelTwo = 'Description:';
+      labelThree = 'Domain:'
+      inputTwo = <input type='text' value={this.state.description} className='modal-input' id='edit-course-description' onChange={this.handleChange} placeholder='Description'></input>
+      inputThree = <input type='text' value={this.state.domain} className='modal-input' id='edit-course-domain' onChange={this.handleChange} placeholder='Domain'></input>
     } else {
-      inputTwo = <input type='text' value={this.state.duration} id='edit-test-duration' onChange={this.handleChange} placeholder='Test Duration'></input>
-      inputThree = <input type='text' value={this.state.num_of_questions} id='edit-test-num_of_questions' onChange={this.handleChange} placeholder='Number of Questions'></input>
+      labelTwo = 'Duration:';
+      labelThree = 'Number of Questions:'
+      inputTwo = <input type='text' value={this.state.duration} className='modal-input' id='edit-test-duration' onChange={this.handleChange} placeholder='Test Duration'></input>
+      inputThree = <input type='text' value={this.state.num_of_questions} className='modal-input' id='edit-test-num_of_questions' onChange={this.handleChange} placeholder='Number of Questions'></input>
     }
 
     return (
-      <div>
-        <span>
-          <span>Add {this.props.type}</span> 
-          <span onClick={() => this.props.closeAdd(null)}>X</span>
-        </span>
+      <div id='modal'>
+        <div className='modal-body'>
+          <div className='modal-header'>
+            <span><strong>Add {this.props.type}</strong></span> 
+            <span className='exit-btn' onClick={() => this.props.closeAdd(null)}>X</span>
+          </div>
 
-        <form onSubmit={this.handleSubmit}>
-          <input type='text' value={this.state.name} id='edit-name' onChange={this.handleChange} placeholder={`${this.props.type} Name`} required></input>
-          {inputTwo}
-          {inputThree}
-          <input type='submit' value='submit'></input>
-        </form>
+          <form className='modal-form' onSubmit={this.handleSubmit}>
+            <label>Name:</label>
+            <input type='text' value={this.state.name} className='modal-input' id='edit-name' onChange={this.handleChange} placeholder={`${this.props.type} Name`} required></input>
+            <label>{labelTwo}</label>
+            {inputTwo}
+            <label>{labelThree}</label>
+            {inputThree}
+            <input className='form-btn' type='submit' value='Submit'></input>
+          </form>
 
+        </div>
       </div>
     )
   }
