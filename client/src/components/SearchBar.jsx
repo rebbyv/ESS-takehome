@@ -6,7 +6,7 @@ class SearchBar extends React.Component {
       option: 'course id'
     }
     this.handleChange = this.handleChange.bind(this);
-    this.onSumbit = this.onSumbit.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleSelectChange = this.handleSelectChange.bind(this);
   }
 
@@ -19,10 +19,10 @@ class SearchBar extends React.Component {
   }
 
   // on submitting the form, search for the input & reset state
-  onSumbit(event) {
+  handleSubmit(event) {
     event.preventDefault();
-    this.props.search(this.state, this.state.option);
-    this.setState({ input: '', option: 'id' });
+    //this.props.search(event.target.value, this.state.option);
+    this.setState({ input: '', option: 'course id' });
   }
 
   // change what term to search by- course id, course name, or test name

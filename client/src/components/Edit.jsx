@@ -52,7 +52,6 @@ class Edit extends React.Component {
   render() {
     // change type & input based on whether it's a test or course being edited
     let type, inputTwo, inputThree, labelTwo, labelThree;
-    console.log(this.props)
     if (this.props.data.domain) {
       type = 'Course';
       labelTwo = 'Description:';

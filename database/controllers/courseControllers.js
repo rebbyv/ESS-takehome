@@ -21,7 +21,7 @@ module.exports.read = (identifier, query) => {
     let mysqlQuery;
     // if there has been a query entered:
     if (query !== 'null') {
-      mysqlQuery = `SELECT course.*, course.id AS courseID, course.name AS course_name, test.* FROM course JOIN test ON course.id = test.course_id WHERE course.${identifier} LIKE '${query}%' ORDER BY course_name ASC`
+      mysqlQuery = `SELECT course.*, course.id AS courseID, course.name AS course_name, test.* FROM course LEFT JOIN test ON course.id = test.course_id WHERE course.${identifier} LIKE '${query}%' OR course.${identifier} = '${query}' ORDER BY course_name ASC`
     // otherwise grab all results from courses w/ the corresponding tests- like on portal load
     } else {
       mysqlQuery = 'SELECT course.*, course.id AS courseID, course.name AS course_name, test.* FROM course LEFT JOIN test ON course.id = test.course_id ORDER BY course_name ASC';
