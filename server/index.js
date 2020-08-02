@@ -6,6 +6,8 @@ const app = express();
 const courses = require('../database/controllers/courseControllers.js');
 const tests = require('../database/controllers/testControllers.js');
 
+const createPDF = require('./createPDF.js');
+
 // load client portal
 app.use(express.static('client/dist'))
 app.use(express.json()) // for parsing application/json
@@ -35,7 +37,7 @@ app.get('/ce/:type/:identifier/:query', (req, res) => {
       .then((results) => res.status(200).send(results))
       .catch((error) => res.status(500).send(error))
   } else {
-    tests.read(req.params.identifier, req.params.query)
+    tests.read(req.params.query)
       .then((results) => res.status(200).send(results))
       .catch((error) => res.status(500).send(error))
   }
@@ -71,7 +73,9 @@ app.delete('/ce/:type/:id', (req, res) => {
   }
 })
 
-
+app.get('/ce/pdf', (req, res) => {
+  //createPDF();
+})
 
 app.listen(port, (error) => {
   error ? console.log('Error in establing server connection'): console.log(`Express server listening on port: ${port}`);

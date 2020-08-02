@@ -51,32 +51,32 @@ class Edit extends React.Component {
 
   render() {
     // change type & input based on whether it's a test or course being edited
-    let type, inputTwo, inputThree, labelTwo, labelThree;
-    if (this.props.data.domain) {
-      type = 'Course';
+    let name, inputTwo, inputThree, labelTwo, labelThree;
+    if (this.props.type === 'Course') {
+      name = this.props.data.course_name;
       labelTwo = 'Description:';
       labelThree = 'Domain:';
       inputTwo = <input type='text' value={this.state.description === '' ? this.props.data.description: this.state.description} id='edit-course-description' className='modal-input' onChange={this.handleChange}></input>
       inputThree = <input type='text' value={this.state.domain === '' ? this.props.data.domain: this.state.domain} id='edit-course-domain' className='modal-input' onChange={this.handleChange}></input>
     } else {
-      type = 'Test';
+      name = this.props.data.name;
       labelTwo = 'Duration:';
       labelThree = 'Number of Questions';
       inputTwo = <input type='text' value={this.state.duration === '' ? this.props.data.duration: this.state.duration} id='edit-test-duration' className='modal-input' onChange={this.handleChange}></input>
-      inputThree = <input type='text' value={this.state.num_of_questions === '' ? this.props.data.numQuestions: this.state.num_of_questions} id='edit-test-num_of_questions' className='modal-input' onChange={this.handleChange}></input>
+      inputThree = <input type='text' value={this.state.num_of_questions === '' ? this.props.data.num_of_questions: this.state.num_of_questions} id='edit-test-num_of_questions' className='modal-input' onChange={this.handleChange}></input>
     }
 
     return (
       <div id='modal'>
         <div className='modal-body'>
           <div className='modal-header'>
-            <span><strong>Edit {type}</strong></span> 
+            <span><strong>Edit {this.props.type}</strong></span> 
             <span className='exit-btn' onClick={() => this.props.closeEdit(null)}>X</span>
           </div>
 
           <form className='modal-form' onSubmit={this.handleSubmit}>
             <label>Name:</label>
-            <input type='text' value={this.state.name === '' ? this.props.data.name: this.state.name} id='edit-name' className='modal-input' onChange={this.handleChange}></input>
+            <input type='text' value={this.state.name === '' ? name: this.state.name} id='edit-name' className='modal-input' onChange={this.handleChange}></input>
             <label>{labelTwo}</label>
             {inputTwo}
             <label>{labelThree}</label>
@@ -85,8 +85,8 @@ class Edit extends React.Component {
           </form>
 
           <div className='delete-div'>
-            {this.state.clickCount === 1 ? <span>Are you sure? {type} will be deleted.</span>: null}
-            <button id='delete-btn' onClick={this.handleDelete}>{this.state.clickCount === 1 ? 'Yes, ':null}Delete {type}</button>
+            {this.state.clickCount === 1 ? <span>Are you sure? {this.props.type} will be deleted.</span>: null}
+            <button id='delete-btn' onClick={this.handleDelete}>{this.state.clickCount === 1 ? 'Yes, ':null}Delete {this.props.type}</button>
           </div>
 
         </div>

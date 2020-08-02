@@ -12,11 +12,10 @@ module.exports.create = (data) => {
 };
 
 // Read 
-// identifier is either id or name
 // query is what has been entered by user
-module.exports.read = (identifier, query) => {
+module.exports.read = (query) => {
   return new Promise((resolve, reject) => {
-    connection.query(`SELECT * FROM test WHERE ? LIKE '?%'`, [identifier, query], (error, result) => {
+    connection.query(`SELECT * FROM test WHERE name LIKE '${query}%'`, (error, result) => {
       error ? reject(error): resolve(result);
     })
   })

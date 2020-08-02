@@ -2,7 +2,6 @@ import SearchBar from './SearchBar.jsx';
 import AllCourses from './AllCourses.jsx';
 import Edit from './Edit.jsx';
 import Add from './Add.jsx'
-import sortData from '../helpers/sortData.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -11,9 +10,10 @@ class App extends React.Component {
       courses: [],
       editModal: false,
       dataToEdit: null,
+      typeToEdit: null,
       addModal: false,
       typeToAdd: null,
-      courseId: null
+      courseId: null,
     }
   }
 
@@ -34,25 +34,34 @@ class App extends React.Component {
           this.setState({ courses: null })
         } else {
           // sort into array of objects, tests are nested in the courses
-          var courses = sortData(response.data)
-          this.setState({ courses })
+          //var courses = sortData(response.data)
+          this.setState({ courses: response.data })
         }
       })
       .catch((error) => console.log(error))
   }
 
-  openEdit(data) {
+  // open edit modal w/ data to Edit & type being course or test
+  openEdit(data, type) {
     this.setState({ 
       editModal: true,
-      dataToEdit: data
+      dataToEdit: data,
+      typeToEdit: type
     })
   }
 
   // close edit modal. If data is not null, edit the coures or test & then update course list
   closeEdit(data, updates) {
     if (data) {
-      let type = data.domain ? 'course': 'test';
-      axios.put(`http://localhost:2000/ce/${type}/${data.id}`, updates)
+      let type, id;
+      if (this.state.typeToEdit === 'Course') {
+        type = 'course'
+        id = data.course_id;
+      } else {
+        type = 'test'
+        id = data.id;
+      }
+      axios.put(`http://localhost:2000/ce/${type}/${id}`, updates)
       .then(() => {
         this.search(null, 'course id');
       })
@@ -60,7 +69,8 @@ class App extends React.Component {
     } 
     this.setState({
       editModal: false,
-      dataToEdit: null
+      dataToEdit: null,
+      typeToEdit: null
     })
   }
 
@@ -91,12 +101,24 @@ class App extends React.Component {
 
   // delete a course or test & then get updated results
   delete(data) {
-    let type = data.domain ? 'course': 'test';
-    axios.delete(`http://localhost:2000/ce/${type}/${data.id}`)
+    let type, id;
+    if (this.state.typeToEdit === 'Course') {
+      type = 'course'
+      id = data.courseID;
+    } else {
+      type = 'test'
+      id = data.id;
+    }
+    axios.delete(`http://localhost:2000/ce/${type}/${id}`)
       .then(() => {
         this.search(null, 'course id');
       })
       .catch((error) => console.log(error))
+  }
+
+  // make a new PDF on checking or unchecking boxes & page load
+  renderPDF() {
+    console.log(this.state.courses)
   }
 
   // grab all courses & tests upon loading portal
@@ -112,24 +134,26 @@ class App extends React.Component {
     } else if (this.state.courses.length === 0) {
       courses = <div>Loading...</div>
     } else {
-      courses = <AllCourses courses={this.state.courses} edit={this.openEdit.bind(this)} add={this.openAdd.bind(this)}/>
+      courses = <AllCourses courses={this.state.courses} edit={this.openEdit.bind(this)} add={this.openAdd.bind(this)} renderPDF={this.renderPDF.bind(this)}/>
     }
 
     return (
       <>
-        {this.state.editModal ? <Edit data={this.state.dataToEdit} closeEdit={this.closeEdit.bind(this)} delete={this.delete.bind(this)}/>: null}
+        {this.state.editModal ? <Edit data={this.state.dataToEdit} type={this.state.typeToEdit} closeEdit={this.closeEdit.bind(this)} delete={this.delete.bind(this)}/>: null}
         {this.state.addModal ? <Add type={this.state.typeToAdd} closeAdd={this.closeAdd.bind(this)} id={this.state.courseId}/>: null}
 
         <header>
           <h1>Education Portal</h1>
           <SearchBar search={this.search.bind(this)}/>
+          {/* <a href={this.state.file}>PDF of courses</a> */}
         </header>
 
         <div id='main'>
           <h3>Available Courses</h3>
           {courses}
-          
-          <button onClick={this.openAdd.bind(this, 'Course')}>Add New Course</button>
+          <div>
+            <button onClick={this.openAdd.bind(this, 'Course')}>Add New Course</button>
+          </div>
         </div>
       </>
     )

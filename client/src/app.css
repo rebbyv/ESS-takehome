@@ -36,28 +36,45 @@ select {
 }
 
 #main {
-  margin-top: 160px;
+  margin-top: 170px;
   padding: 0px 100px;
 }
 
-.courses {
-  border: 1px solid black;
-  padding: 10px;
-  margin: 10px 0px;
-}
-
-.course-info {
+.test-row {
   display: flex;
-  flex-direction: row;
-  margin: 30px 0px;
+  padding: 10px;
+  margin: 20px 0
 }
 
-.course-name {
-  width: 60%
+.test-box {
+  width: 19%;
+}
+
+.test-header {
+  font-weight: bold;
+}
+
+.test-checkbox {
+  width: 5%
+}
+
+.checkbox {
+  border: 1px solid black;
+  padding: 3px;
+  height: 25px;
+  width: 25px;
+  margin: auto;
+}
+.checkbox:hover {
+  cursor: pointer;
+}
+
+.edit-box {
+  display: flex;
+  flex-direction: column;
 }
 
 .edit-course-btn {
-  float: right;
   font-size: 10px;
 }
 .edit-course-btn:hover {
@@ -66,6 +83,7 @@ select {
 
 .edit-test-btn {
   font-size: 10px;
+  margin: 7px 0px;
 }
 .edit-test-btn:hover {
   cursor: pointer;
@@ -95,6 +113,7 @@ button {
   margin: auto;
   margin-top: 30px;
   display: block;
+  width: 150px;
 }
 button:hover {
   cursor: pointer;

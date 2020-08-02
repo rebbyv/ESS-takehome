@@ -70,6 +70,7 @@ class Add extends React.Component {
             {inputTwo}
             <label>{labelThree}</label>
             {inputThree}
+
             <input className='form-btn' type='submit' value='Submit'></input>
           </form>
 
