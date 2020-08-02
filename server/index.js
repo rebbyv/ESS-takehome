@@ -74,7 +74,7 @@ app.delete('/ce/:type/:id', (req, res) => {
 })
 
 app.get('/ce/pdf', (req, res) => {
-  //createPDF();
+  createPDF(req.query.courses)
 })
 
 app.listen(port, (error) => {

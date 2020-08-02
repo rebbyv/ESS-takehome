@@ -118,7 +118,11 @@ class App extends React.Component {
 
   // make a new PDF on checking or unchecking boxes & page load
   renderPDF() {
-    console.log(this.state.courses)
+    axios.get(`http://localhost:2000/ce/pdf`, {params: {courses:this.state.courses}})
+      .then(() => {
+        console.log('render pdf done')
+      })
+      .catch((error) => console.log(error))
   }
 
   // grab all courses & tests upon loading portal
