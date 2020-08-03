@@ -1,8 +1,7 @@
 import SearchBar from './SearchBar.jsx';
 import AllCourses from './AllCourses.jsx';
 import Edit from './Edit.jsx';
-import Add from './Add.jsx'
-import pdf from '../../dist/courses.pdf'
+import Add from './Add.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -15,6 +14,7 @@ class App extends React.Component {
       addModal: false,
       typeToAdd: null,
       courseId: null,
+      link: null
     }
   }
 
@@ -119,9 +119,17 @@ class App extends React.Component {
 
   // make a new PDF on checking or unchecking boxes & page load
   renderPDF() {
-    axios.get(`http://localhost:2000/ce/pdf`, {params: {courses:this.state.courses}})
-      .then(() => {
-        console.log('render pdf done')
+    axios.get(`http://localhost:2000/ce/pdf`, {
+      params: {
+        courses:this.state.courses
+      }
+    })
+    .then((response) => {
+        var data = Object.entries(response.data).map((item) => item[1])
+        const blob = new Blob(data, {type: 'application/pdf'})
+        var URL = window.URL || window.webkitURL;
+        var downloadUrl = URL.createObjectURL(blob);
+        this.setState({ link: downloadUrl })
       })
       .catch((error) => console.log(error))
   }
@@ -150,7 +158,7 @@ class App extends React.Component {
         <header>
           <h1>Education Portal</h1>
           <SearchBar search={this.search.bind(this)}/>
-          <div>PDF Output <a href={pdf} target='_blank'>Download</a></div>
+          <div>PDF Output <a href={this.state.link} target='_blank'>Download</a></div>
         </header>
 
         <div id='main'>

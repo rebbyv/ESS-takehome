@@ -6,7 +6,7 @@ const app = express();
 const courses = require('../database/controllers/courseControllers.js');
 const tests = require('../database/controllers/testControllers.js');
 
-const createPDF = require('./createPDF.js');
+const createPDF = require('./createPDFkit.js');
 
 // load client portal
 app.use(express.static('client/dist'))
@@ -74,7 +74,11 @@ app.delete('/ce/:type/:id', (req, res) => {
 })
 
 app.get('/ce/pdf', (req, res) => {
-  createPDF(req.query.courses)
+  createPDF(req.query.courses) 
+    .then((results) => {
+      res.status(200).send(results)
+    })
+    .catch((error) => res.status(500).send(error))
 })
 
 app.listen(port, (error) => {
