@@ -2,6 +2,7 @@ import SearchBar from './SearchBar.jsx';
 import AllCourses from './AllCourses.jsx';
 import Edit from './Edit.jsx';
 import Add from './Add.jsx'
+import pdf from '../../dist/courses.pdf'
 
 class App extends React.Component {
   constructor(props) {
@@ -149,7 +150,7 @@ class App extends React.Component {
         <header>
           <h1>Education Portal</h1>
           <SearchBar search={this.search.bind(this)}/>
-          {/* <a href={this.state.file}>PDF of courses</a> */}
+          <div>PDF Output <a href={pdf} target='_blank'>Download</a></div>
         </header>
 
         <div id='main'>
