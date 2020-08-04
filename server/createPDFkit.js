@@ -1,5 +1,5 @@
 const PDFDocument = require('pdfkit');
-const getStream = require('get-stream')
+const getStream = require('get-stream');
 
 
 module.exports = async (data) => {
@@ -15,18 +15,21 @@ module.exports = async (data) => {
   .text('Test Name', 150, 70)
   .text('Course Name', 300, 70)
   
-  let height = 100;
+  let lineHeight = 100;
   doc.fontSize(14);
   for (let i = 0; i < data.length; i++) {
     let newData = JSON.parse(data[i])
     if (newData.name !== null) {
       if (newData.completed) {
-        doc.text('Yes', 30, height)
+        doc.moveTo(60, lineHeight + 5)
+          .lineTo(65, lineHeight + 10)
+          .lineTo(80, lineHeight - 5)
+          .stroke()
       }
-      doc.text(newData.name, 150, height)
-      doc.text(newData.course_name, 300, height)
+      doc.text(newData.name, 150, lineHeight)
+      doc.text(newData.course_name, 300, lineHeight)
     }
-    height += 20
+    lineHeight += 20
   }
   doc.end();
   try {
