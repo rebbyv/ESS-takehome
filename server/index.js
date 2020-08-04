@@ -73,12 +73,14 @@ app.delete('/ce/:type/:id', (req, res) => {
   }
 })
 
-app.get('/ce/pdf', (req, res) => {
-  createPDF(req.query.courses) 
-    .then((results) => {
-      res.status(200).send(results)
-    })
-    .catch((error) => res.status(500).send(error))
+app.get('/ce/pdf', async (req, res) => {
+  try {
+    const pdfBuffer = await createPDF(req.query.courses)
+    const pdfBase64string = pdfBuffer.toString('base64')
+    res.status(200).send(pdfBase64string)
+  } catch (error) {
+    res.status(500).send(error)
+  }
 })
 
 app.listen(port, (error) => {

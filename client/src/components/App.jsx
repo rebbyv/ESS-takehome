@@ -125,13 +125,18 @@ class App extends React.Component {
       }
     })
     .then((response) => {
-        var data = Object.entries(response.data).map((item) => item[1])
-        const blob = new Blob(data, {type: 'application/pdf'})
-        var URL = window.URL || window.webkitURL;
-        var downloadUrl = URL.createObjectURL(blob);
-        this.setState({ link: downloadUrl })
-      })
-      .catch((error) => console.log(error))
+      var byteCharacters = atob(response.data)
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      var blob = new Blob([byteArray], {type: 'application/pdf'});
+      var URL = window.URL || window.webkitURL;
+      var downloadUrl = URL.createObjectURL(blob);
+      this.setState({ link: downloadUrl })
+    })
+    .catch((error) => console.log(error))
   }
 
   // grab all courses & tests upon loading portal
@@ -158,7 +163,7 @@ class App extends React.Component {
         <header>
           <h1>Education Portal</h1>
           <SearchBar search={this.search.bind(this)}/>
-          <div>PDF Output <a href={this.state.link} target='_blank'>Download</a></div>
+          {this.state.link ? <div id='pdf-link'><a href={this.state.link} target='_blank'>Download Education History</a></div>: <div id='pdf-link'> </div>}
         </header>
 
         <div id='main'>

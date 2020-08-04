@@ -48,7 +48,6 @@ module.exports.update = (id, data) => {
 module.exports.delete = (id) => {
   return new Promise((resolve, reject) => {
     connection.query(`DELETE FROM course WHERE id = ?`, [id], (error, result) => {
-      console.log(error, result)
       error ? reject(error): resolve(result);
     })
   })

@@ -35,8 +35,12 @@ select {
   font-family: Arial;
 }
 
+#pdf-link {
+  margin-top: 20px;
+}
+
 #main {
-  margin-top: 170px;
+  margin-top: 220px;
   padding: 0px 100px;
 }
 
