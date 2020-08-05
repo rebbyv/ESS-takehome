@@ -11,7 +11,7 @@ export const useInput = (initialValue, searchFunc) => {
       value,
       onChange: event => {
         setValue(event.target.value);
-        searchFunc(event.target.value);
+        if (searchFunc) searchFunc(event.target.value);
       }
     }
   };

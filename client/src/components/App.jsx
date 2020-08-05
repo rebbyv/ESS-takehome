@@ -1,21 +1,19 @@
 import React from 'react';
 import SearchBar from './SearchBar.jsx';
 import AllCourses from './AllCourses.jsx';
-import Edit from './Edit.jsx';
-import Add from './Add.jsx';
+import Modal from './Modal.jsx';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       courses: [],
-      editModal: false,
-      dataToEdit: null,
-      typeToEdit: null,
-      addModal: false,
-      typeToAdd: null,
+      modal: false,
+      typeOfModal: null,
+      data: null,
+      type: null,
       courseId: null,
-      link: null
+      link: null,
     }
   }
 
@@ -35,8 +33,6 @@ class App extends React.Component {
         if (response.data.length === 0) {
           this.setState({ courses: null })
         } else {
-          // sort into array of objects, tests are nested in the courses
-          //var courses = sortData(response.data)
           this.setState({ courses: response.data })
         }
       })
@@ -44,11 +40,13 @@ class App extends React.Component {
   }
 
   // open edit modal w/ data to Edit & type being course or test
-  openEdit(data, type) {
+  openModal(modal, type, data, id) {
     this.setState({ 
-      editModal: true,
-      dataToEdit: data,
-      typeToEdit: type
+      modal: true,
+      typeOfModal: modal,
+      data: data,
+      type: type,
+      courseId: id
     })
   }
 
@@ -70,18 +68,11 @@ class App extends React.Component {
       .catch((error) => console.log(error))
     } 
     this.setState({
-      editModal: false,
-      dataToEdit: null,
-      typeToEdit: null
-    })
-  }
-
-  // open add Modal to add course or test
-  openAdd(type, id) {
-    this.setState({
-      addModal: true,
-      typeToAdd: type,
-      courseId: id
+      modal: false,
+      typeOfModal: null,
+      data: null,
+      type: null,
+      courseId: null
     })
   }
 
@@ -95,8 +86,10 @@ class App extends React.Component {
       .catch((error) => console.log(error))
     } 
     this.setState({
-      addModal: false,
-      typeToAdd: null,
+      modal: false,
+      typeOfModal: null,
+      data: null,
+      type: null,
       courseId: null
     })
   }
@@ -153,26 +146,29 @@ class App extends React.Component {
     } else if (this.state.courses.length === 0) {
       courses = <div>Loading...</div>
     } else {
-      courses = <AllCourses courses={this.state.courses} edit={this.openEdit.bind(this)} add={this.openAdd.bind(this)} renderPDF={this.renderPDF.bind(this)}/>
+      courses = <AllCourses courses={this.state.courses} modal={this.openModal.bind(this)} renderPDF={this.renderPDF.bind(this)}/>
     }
+    
 
     return (
       <>
-        {this.state.editModal ? <Edit data={this.state.dataToEdit} type={this.state.typeToEdit} closeEdit={this.closeEdit.bind(this)} delete={this.delete.bind(this)}/>: null}
-        {this.state.addModal ? <Add type={this.state.typeToAdd} closeAdd={this.closeAdd.bind(this)} id={this.state.courseId}/>: null}
+        {this.state.modal ? <Modal data={this.state.data} modal={this.state.typeOfModal} id={this.state.courseId} type={this.state.type} closeEdit={this.closeEdit.bind(this)} closeAdd={this.closeAdd.bind(this)}  delete={this.delete.bind(this)}/>: null}
 
         <header>
           <h1>Education Portal</h1>
           <SearchBar search={this.search.bind(this)}/>
-          {this.state.link ? <div id='pdf-link'><a href={this.state.link} target='_blank'>Download Education History</a></div>: <div id='pdf-link'> </div>}
+          <div id='pdf-link'><a href={this.state.link} target='_blank'>Download Education History</a></div> 
         </header>
 
         <div id='main'>
           <h3>Available Courses</h3>
+
           {courses}
+
           <div>
-            <button onClick={this.openAdd.bind(this, 'Course')}>Add New Course</button>
+            <button onClick={this.openModal.bind(this, 'Add', 'Course')}>Add New Course</button>
           </div>
+
         </div>
       </>
     )

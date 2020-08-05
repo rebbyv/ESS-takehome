@@ -1,6 +1,71 @@
 import React from 'react';
+import { useInput } from '../hooks/input-hook.js';
+import DeleteBtn from './DeletBtn.jsx';
 
-class Edit extends React.Component {
+///////////// USING HOOKS /////////////
+var Modal = (props) => {
+  const { value:name, bind:bindName } = useInput('');
+  const { value:description, bind:bindDescription } = useInput('');
+  const { value:domain, bind:bindDomain } = useInput('');
+  const { value:duration, bind:bindDuration } = useInput('');
+  const { value:num_of_questions, bind:bindNum_of_questions } = useInput('');
+
+
+  // change type & input based on whether it's a test or course being edited
+  let inputOne, inputTwo, inputThree;
+  if (props.type === 'Course') {
+    inputOne = <input type='text' {...bindName} className='modal-input' placeholder={props.data.course_name}></input>
+    inputTwo = <input type='text' {...bindDescription} className='modal-input' placeholder={props.data.description}></input>
+    inputThree = <input type='text' {...bindDomain} className='modal-input' placeholder={props.data.domain}></input>
+  } else {
+    inputOne = <input type='text' {...bindName} className='modal-input' placeholder={props.data ? props.data.name: null}></input>
+    inputTwo = <input type='text' {...bindDuration} className='modal-input' placeholder={props.data ? props.data.duration: null}></input>
+    inputThree = <input type='text' {...bindNum_of_questions} className='modal-input' placeholder={props.data ? props.data.num_of_questions: null}></input>
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (props.modal === 'Edit') {
+      props.closeEdit(props.data, { name, description, domain, duration, num_of_questions });
+    } else {
+      var data = props.type === 'Course' ? [name, domain, description]: [props.id, parseInt(num_of_questions), name, duration];
+      props.closeAdd(data, props.type);
+    }
+  }
+
+
+  return (
+    <div id='modal'>
+    <div className='modal-body'>
+
+      <div className='modal-header'>
+        <span><strong>{props.modal} {props.type}</strong></span> 
+        <span className='exit-btn' onClick={() => props.closeEdit(null)}>X</span>
+      </div>
+
+      <form className='modal-form' onSubmit={handleSubmit}>
+        <label>Name:</label>
+        {inputOne}
+        <label>{props.type === 'Course' ? 'Description': 'Duration'}</label>
+        {inputTwo}
+        <label>{props.type === 'Course' ? 'Category': 'Number of Questions'}</label>
+        {inputThree}
+        <input className='form-btn' type='submit' value='Submit'></input>
+      </form>
+
+      {props.modal === 'Edit' ? <DeleteBtn type={props.type} data={props.data} delete={props.delete} closeEdit={props.closeEdit}/>: null}
+      
+    </div>
+  </div>
+  )
+}
+
+export default Modal;
+
+
+/*
+///////////// WITHOUT HOOKS /////////////
+class Modal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -9,11 +74,9 @@ class Edit extends React.Component {
       domain: '',
       duration: '',
       num_of_questions: '',
-      clickCount: 0
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleDelete = this.handleDelete.bind(this);
   }
 
   // update correct values
@@ -35,19 +98,6 @@ class Edit extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     this.props.closeEdit(this.props.data, this.state);
-  }
-
-  // delete a course or test
-  handleDelete() {
-    // make the user confirm deletion
-    if (this.state.clickCount === 0) {
-      this.setState({ clickCount: 1 })
-    } else {
-      // submit request to delete & close Edit Modal
-      this.props.delete(this.props.data);
-      this.props.closeEdit();
-      this.setState({ clickCount: 0 })
-    }
   }
 
 
@@ -86,15 +136,13 @@ class Edit extends React.Component {
             <input className='form-btn' type='submit' value='Submit'></input>
           </form>
 
-          <div className='delete-div'>
-            {this.state.clickCount === 1 ? <span>Are you sure? {this.props.type} will be deleted.</span>: null}
-            <button id='delete-btn' onClick={this.handleDelete}>{this.state.clickCount === 1 ? 'Yes, ':null}Delete {this.props.type}</button>
-          </div>
-
+          <DeleteBtn type={this.props.type} data={this.props.data} delete={this.props.delete} closeEdit={this.props.closeEdit}/>
+          
         </div>
       </div>
     )
   }
 }
 
-export default Edit;
+export default Modal;
+*/

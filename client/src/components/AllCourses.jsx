@@ -15,7 +15,7 @@ var AllCourses = (props) => {
         <span className='test-box test-header'>Course Category</span>
         <span className='test-box test-header'>Options</span>
       </div>
-      {props.courses.map((course, i) => <Test data={course} key={i} edit={props.edit} add={props.add} renderPDF={props.renderPDF}/>)}
+      {props.courses.map((course, i) => <Test data={course} key={i} modal={props.modal} renderPDF={props.renderPDF}/>)}
     </div>
   )
 }
