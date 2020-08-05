@@ -1,3 +1,38 @@
+import React from 'react';
+import { useInput } from '../hooks/input-hook.js';
+
+///////////// USING HOOKS /////////////
+var SearchBar = (props) => {
+  const { value:input, bind:bindInput, reset:resetInput } = useInput('', props.search);
+  const { value:option, bind:bindOption, reset:resetOption } = useInput('course id');
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    props.search(input, option)
+    resetInput();
+    resetOption();
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input type='text' {...bindInput} placeholder='Search by Course or Test'></input>
+
+      <select {...bindOption}>
+        <option value='course id'>Course Id</option>
+        <option value='course name'>Course Name</option>
+        <option value='test name'>Test Name</option>
+      </select>
+
+      <input id='form-submit-btn' type="submit" value="Submit"/>
+    </form>
+  )
+}
+
+export default SearchBar;
+
+
+/*
+///////////// WITHOUT HOOKS /////////////
 class SearchBar extends React.Component {
   constructor(props) {
     super(props);
@@ -21,7 +56,6 @@ class SearchBar extends React.Component {
   // on submitting the form, search for the input & reset state
   handleSubmit(event) {
     event.preventDefault();
-    //this.props.search(event.target.value, this.state.option);
     this.setState({ input: '', option: 'course id' });
   }
 
@@ -46,5 +80,4 @@ class SearchBar extends React.Component {
     )
   }
 }
-
-export default SearchBar;
+*/

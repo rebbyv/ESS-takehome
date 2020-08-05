@@ -1,3 +1,4 @@
+import React from 'react';
 import SearchBar from './SearchBar.jsx';
 import AllCourses from './AllCourses.jsx';
 import Edit from './Edit.jsx';

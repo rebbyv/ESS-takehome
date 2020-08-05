@@ -1,3 +1,4 @@
+import React from 'react';
 import Test from './Test.jsx';
 
 var AllCourses = (props) => {
