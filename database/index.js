@@ -1,5 +1,5 @@
 var mysql = require('mysql');
-var dbCreds = require('../config.js');
+var dbCreds = require('../publicConfig.js');
 
 var config = {
   host: 'localhost',
