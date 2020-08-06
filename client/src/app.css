@@ -40,7 +40,7 @@ select {
 }
 
 #main {
-  margin-top: 220px;
+  margin-top: 270px;
   padding: 0px 100px;
 }
 
@@ -125,7 +125,11 @@ button:hover {
 button#delete-btn {
   margin-top: 10px;
 }
-
+button#reset-btn {
+  margin: 0;
+  margin-top: 20px;
+  background-color: darkgray;
+}
 /* Modal for Editing or Adding  */
 #modal {
   background-color: #808080c9;

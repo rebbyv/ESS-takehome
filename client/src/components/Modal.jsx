@@ -14,9 +14,9 @@ var Modal = (props) => {
   // change type & input based on whether it's a test or course being edited
   let inputOne, inputTwo, inputThree;
   if (props.type === 'Course') {
-    inputOne = <input type='text' {...bindName} className='modal-input' placeholder={props.data.course_name}></input>
-    inputTwo = <input type='text' {...bindDescription} className='modal-input' placeholder={props.data.description}></input>
-    inputThree = <input type='text' {...bindDomain} className='modal-input' placeholder={props.data.domain}></input>
+    inputOne = <input type='text' {...bindName} className='modal-input' placeholder={props.data ? props.data.course_name: null}></input>
+    inputTwo = <input type='text' {...bindDescription} className='modal-input' placeholder={props.data ? props.data.description: null}></input>
+    inputThree = <input type='text' {...bindDomain} className='modal-input' placeholder={props.data ? props.data.domain: null}></input>
   } else {
     inputOne = <input type='text' {...bindName} className='modal-input' placeholder={props.data ? props.data.name: null}></input>
     inputTwo = <input type='text' {...bindDuration} className='modal-input' placeholder={props.data ? props.data.duration: null}></input>
@@ -39,7 +39,7 @@ var Modal = (props) => {
     <div className='modal-body'>
 
       <div className='modal-header'>
-        <span><strong>{props.modal} {props.type}</strong></span> 
+        <span><strong>{props.modal}</strong> <strong>{props.type}</strong></span> 
         <span className='exit-btn' onClick={() => props.closeEdit(null)}>X</span>
       </div>
 

@@ -1,29 +1,35 @@
-import React from 'react';
-import { useInput } from '../hooks/input-hook.js';
+import React, { useState } from 'react';
 
 ///////////// USING HOOKS /////////////
 var SearchBar = (props) => {
-  const { value:input, bind:bindInput, reset:resetInput } = useInput('', props.search);
-  const { value:option, bind:bindOption, reset:resetOption } = useInput('course id');
+  const [query, setQuery] = useState('');
+  const [option, setOption] = useState('course id')
+
+  const handleChange = (event) => {
+    setQuery(event.target.value);
+    props.search(event.target.value, option);
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    props.search(input, option)
-    resetInput();
-    resetOption();
+    props.search(query, option)
+    setQuery('');
+    setOption('course id');
   }
 
   return (
     <form onSubmit={handleSubmit}>
-      <input type='text' {...bindInput} placeholder='Search by Course or Test'></input>
+      <input type='text' value={query} onChange={handleChange} placeholder='Search'></input>
 
-      <select {...bindOption}>
+      <select value={option} onChange={(e) => setOption(e.target.value)}>
         <option value='course id'>Course Id</option>
         <option value='course name'>Course Name</option>
         <option value='test name'>Test Name</option>
       </select>
 
       <input id='form-submit-btn' type="submit" value="Submit"/>
+
+      <button id='reset-btn' onClick={() => props.search(null, 'course id')}>Reset Search</button>
     </form>
   )
 }

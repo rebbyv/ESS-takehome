@@ -9,7 +9,6 @@ class App extends React.Component {
     this.state = {
       courses: [],
       modal: false,
-      typeOfModal: null,
       data: null,
       type: null,
       courseId: null,
@@ -17,10 +16,12 @@ class App extends React.Component {
     }
   }
 
+
   // search for course or test 
   search(input, term) {
     let type = 'course';
     let identifier = 'name';
+    if (input === '') input = null;
     if (term === 'course id') {
       identifier = 'id';
       if (input !== null) parseInt(input);
@@ -30,6 +31,7 @@ class App extends React.Component {
     // get all courses & tests
     axios.get(`http://localhost:2000/ce/${type}/${identifier}/${input}`)
       .then((response) => {
+        console.log(response)
         if (response.data.length === 0) {
           this.setState({ courses: null })
         } else {
@@ -39,28 +41,24 @@ class App extends React.Component {
       .catch((error) => console.log(error))
   }
 
+
   // open edit modal w/ data to Edit & type being course or test
   openModal(modal, type, data, id) {
     this.setState({ 
-      modal: true,
-      typeOfModal: modal,
+      modal: modal || 'Add',
+      type: type || 'Course',
       data: data,
-      type: type,
       courseId: id
     })
   }
 
-  // close edit modal. If data is not null, edit the coures or test & then update course list
+
+  // close modal & edit test/course. If data is not null, edit the coures or test & then update course list
   closeEdit(data, updates) {
     if (data) {
-      let type, id;
-      if (this.state.typeToEdit === 'Course') {
-        type = 'course'
-        id = data.course_id;
-      } else {
-        type = 'test'
-        id = data.id;
-      }
+      var type = this.state.type === 'Course' ? 'course': 'test';
+      var id = this.state.type === 'Course' ? data.course_id: data.id;
+
       axios.put(`http://localhost:2000/ce/${type}/${id}`, updates)
       .then(() => {
         this.search(null, 'course id');
@@ -69,14 +67,14 @@ class App extends React.Component {
     } 
     this.setState({
       modal: false,
-      typeOfModal: null,
       data: null,
       type: null,
       courseId: null
     })
   }
 
-  // close add modal. If data is not null, add to the database & then update course list
+
+  // close modal & add test/course. If data is not null, add to the database & then update course list
   closeAdd(data, type) {
     if (data) {
       axios.post(`http://localhost:2000/ce/${type}`, data)
@@ -87,29 +85,25 @@ class App extends React.Component {
     } 
     this.setState({
       modal: false,
-      typeOfModal: null,
       data: null,
       type: null,
       courseId: null
     })
   }
 
+
   // delete a course or test & then get updated results
   delete(data) {
-    let type, id;
-    if (this.state.typeToEdit === 'Course') {
-      type = 'course'
-      id = data.courseID;
-    } else {
-      type = 'test'
-      id = data.id;
-    }
+    var type = this.state.type === 'Course' ? 'course': 'test';
+    var id = this.state.type === 'Course' ? data.courseID: data.id;
+
     axios.delete(`http://localhost:2000/ce/${type}/${id}`)
       .then(() => {
         this.search(null, 'course id');
       })
       .catch((error) => console.log(error))
   }
+
 
   // make a new PDF on checking or unchecking boxes & page load
   renderPDF() {
@@ -133,10 +127,12 @@ class App extends React.Component {
     .catch((error) => console.log(error))
   }
 
+
   // grab all courses & tests upon loading portal
   componentDidMount() {
     this.search(null, 'course id');
   }
+
 
 
   render() {
@@ -146,13 +142,13 @@ class App extends React.Component {
     } else if (this.state.courses.length === 0) {
       courses = <div>Loading...</div>
     } else {
-      courses = <AllCourses courses={this.state.courses} modal={this.openModal.bind(this)} renderPDF={this.renderPDF.bind(this)}/>
+      courses = <AllCourses courses={this.state.courses} openModal={this.openModal.bind(this)} renderPDF={this.renderPDF.bind(this)}/>
     }
     
 
     return (
       <>
-        {this.state.modal ? <Modal data={this.state.data} modal={this.state.typeOfModal} id={this.state.courseId} type={this.state.type} closeEdit={this.closeEdit.bind(this)} closeAdd={this.closeAdd.bind(this)}  delete={this.delete.bind(this)}/>: null}
+        {this.state.modal ? <Modal data={this.state.data} modal={this.state.modal} id={this.state.courseId} type={this.state.type} closeEdit={this.closeEdit.bind(this)} closeAdd={this.closeAdd.bind(this)}  delete={this.delete.bind(this)}/>: null}
 
         <header>
           <h1>Education Portal</h1>
@@ -166,7 +162,7 @@ class App extends React.Component {
           {courses}
 
           <div>
-            <button onClick={this.openModal.bind(this, 'Add', 'Course')}>Add New Course</button>
+            <button onClick={() => this.openModal()}>Add New Course</button>
           </div>
 
         </div>

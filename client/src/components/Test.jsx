@@ -21,9 +21,9 @@ var Test = (props) => {
       <span className='test-box'><strong>{props.data.course_name}</strong> - {props.data.description}</span>
       <span className='test-box'>{props.data.domain}</span>
       <span className='test-box edit-box'>
-        <span className='edit-course-btn' onClick={() => props.modal('Edit', 'Course', props.data)}>Edit Course</span>
-        {props.data.name !== null ? <span className='edit-test-btn' onClick={() => props.modal('Edit', 'Test', props.data)}>Edit Test</span>: null}
-        <span className='edit-course-btn' onClick={() => props.modal('Add', 'Test', null, props.data.courseID)}>Add Test</span>
+        <span className='edit-course-btn' onClick={() => props.openModal('Edit', 'Course', props.data)}>Edit Course</span>
+        {props.data.name !== null ? <span className='edit-test-btn' onClick={() => props.openModal('Edit', 'Test', props.data)}>Edit Test</span>: null}
+        <span className='edit-course-btn' onClick={() => props.openModal('Add', 'Test', null, props.data.courseID)}>Add Test</span>
       </span>
     </div>
   )

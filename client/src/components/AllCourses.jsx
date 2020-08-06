@@ -2,7 +2,6 @@ import React from 'react';
 import Test from './Test.jsx';
 
 var AllCourses = (props) => {
-
   // returns the header row for the table to display tests & maps the rest of the rows
   return (
     <div>
@@ -15,7 +14,7 @@ var AllCourses = (props) => {
         <span className='test-box test-header'>Course Category</span>
         <span className='test-box test-header'>Options</span>
       </div>
-      {props.courses.map((course, i) => <Test data={course} key={i} modal={props.modal} renderPDF={props.renderPDF}/>)}
+      {props.courses.map((course, i) => <Test data={course} key={i} openModal={props.openModal} renderPDF={props.renderPDF}/>)}
     </div>
   )
 }

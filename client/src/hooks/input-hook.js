@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export const useInput = (initialValue, searchFunc) => {
+export const useInput = (initialValue) => {
   const [value, setValue] = useState(initialValue);
 
   return {
@@ -11,7 +11,6 @@ export const useInput = (initialValue, searchFunc) => {
       value,
       onChange: event => {
         setValue(event.target.value);
-        if (searchFunc) searchFunc(event.target.value);
       }
     }
   };

@@ -48,7 +48,6 @@ app.put('/ce/:type/:id', (req, res) => {
   // type will be course or test
   // id is the course or test to update
   if (req.params.type === 'course') {
-    console.log("AT SERVER PUT", req.params.id, req.body)
     courses.update(req.params.id, req.body)
       .then((results) => res.status(200).send(results))
       .catch((error) => res.status(500).send(error))
